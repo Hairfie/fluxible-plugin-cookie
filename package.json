@@ -14,6 +14,10 @@
   ],
   "author": "Antoine Hérault <antoine.herault@gmail.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hairfie/fluxible-plugin-cookie/issues"
+  },
+  "homepage": "https://github.com/Hairfie/fluxible-plugin-cookie",
   "dependencies": {
     "cookie": "^0.1.2"
   }
