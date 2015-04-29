@@ -1,0 +1,20 @@
+{
+  "name": "fluxible-plugin-cookie",
+  "version": "0.1.0",
+  "description": "Read & write cookies from your fluxible application",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Hairfie/fluxible-plugin-cookie.git"
+  },
+  "keywords": [
+    "fluxible",
+    "cookie"
+  ],
+  "author": "Antoine Hérault <antoine.herault@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cookie": "^0.1.2"
+  }
+}
