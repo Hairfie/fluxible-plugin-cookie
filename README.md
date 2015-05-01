@@ -1,7 +1,7 @@
 Cookie Plugin for Fluxible
 ==========================
 
-Easily read / writes cookies in your fluxible application.
+Easily read / write cookies from your fluxible application.
 
 Install
 -------
