@@ -20,7 +20,7 @@ function cookiePlugin() {
                         } else {
                             document.cookie = cookieStr;
                         }
-                        cookies = req ? req.cookies : cookie.parse(document.cookie);
+                        cookies = req ? req.cookies : cookie.parse(document.cookie);;
                     };
                     actionContext.getCookie = function (name) {
                         return cookies[name];
