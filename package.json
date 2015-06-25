@@ -1,6 +1,6 @@
 {
   "name": "fluxible-plugin-cookie",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Read & write cookies from your fluxible application",
   "main": "index.js",
   "scripts": {},
