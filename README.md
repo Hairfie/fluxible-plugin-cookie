@@ -20,9 +20,12 @@ app.plug(cookiePlugin());
 
 ```
 
-In your connect/express server side :
+In your connect/express server side include cookieParser and add req/res to the context :
 
 ```javascript
+import cookieParser from 'cookie-parser';
+
+server.use(cookieParser());
 
 server.use((req, res, next) => {
 
