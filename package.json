@@ -15,6 +15,6 @@
   "author": "Antoine Hérault <antoine.herault@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "cookie": "^0.1.2"
+    "cookie": "git://github.com/Hairfie/cookie#master"
   }
 }
