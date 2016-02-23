@@ -9,23 +9,25 @@ function cookiePlugin() {
             var req = options.req;
             var res = options.res;
 
-            var cookies = req ? req.cookies : cookie.parse(document.cookie);
+            function plugToContext(actionContext) {
+                actionContext.setCookie = function (name, value, options) {
+                    var cookieStr = cookie.serialize(name, value, options);
+                    if (res) {
+                        res.setHeader('Set-Cookie', cookieStr);
+                    } else {
+                        document.cookie = cookieStr;
+                    }
+                };
+
+                actionContext.getCookie = function (name) {
+                    var cookies = req ? req.cookies : cookie.parse(document.cookie);
+                    return cookies[name];
+                }
+            }
 
             return {
-                plugActionContext: function (actionContext) {
-                    actionContext.setCookie = function (name, value, options) {
-                        var cookieStr = cookie.serialize(name, value, options);
-                        if (res) {
-                            res.setHeader('Set-Cookie', cookieStr);
-                        } else {
-                            document.cookie = cookieStr;
-                        }
-                        cookies[name] = value;
-                    };
-                    actionContext.getCookie = function (name) {
-                        return cookies[name];
-                    }
-                }
+                plugActionContext: plugToContext,
+                plugStoreContext: plugToContext
             };
         }
     };
