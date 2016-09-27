@@ -16,7 +16,9 @@ function cookiePlugin() {
                     actionContext.setCookie = function (name, value, options) {
                         var cookieStr = cookie.serialize(name, value, options);
                         if (res) {
-                            res.setHeader('Set-Cookie', cookieStr);
+                            var pendingCookiesArray = res.getHeader('Set-Cookie') || [];
+                            var newCookiesArray = pendingCookiesArray.concat(cookieStr);
+                            res.setHeader('Set-Cookie', newCookiesArray);
                         } else {
                             document.cookie = cookieStr;
                         }
