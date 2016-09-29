@@ -11,23 +11,28 @@ function cookiePlugin() {
 
             var cookies = req ? req.cookies : cookie.parse(document.cookie);
 
-            return {
-                plugActionContext: function (actionContext) {
-                    actionContext.setCookie = function (name, value, options) {
-                        var cookieStr = cookie.serialize(name, value, options);
-                        if (res) {
-                            var pendingCookiesArray = res.getHeader('Set-Cookie') || [];
-                            var newCookiesArray = pendingCookiesArray.concat(cookieStr);
-                            res.setHeader('Set-Cookie', newCookiesArray);
-                        } else {
-                            document.cookie = cookieStr;
-                        }
-                        cookies[name] = value;
-                    };
-                    actionContext.getCookie = function (name) {
-                        return cookies[name];
+            // same plugin for action and store contexts.
+            // give them both access to cookies
+            var contextPlug = function (context) {
+                context.setCookie = function (name, value, options) {
+                    var cookieStr = cookie.serialize(name, value, options);
+                    if (res) {
+                        var pendingCookiesArray = res.getHeader('Set-Cookie') || [];
+                        var newCookiesArray = pendingCookiesArray.concat(cookieStr);
+                        res.setHeader('Set-Cookie', newCookiesArray);
+                    } else {
+                        document.cookie = cookieStr;
                     }
+                    cookies[name] = value;
+                };
+                context.getCookie = function (name) {
+                    return cookies[name];
                 }
+            }
+
+            return {
+                plugActionContext: contextPlug,
+                plugStoreContext: contextPlug
             };
         }
     };
