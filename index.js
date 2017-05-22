@@ -1,6 +1,7 @@
 'use strict';
 
 var cookie = require('cookie');
+var merge = require('utils-merge');
 
 function cookiePlugin() {
     return {
@@ -11,21 +12,36 @@ function cookiePlugin() {
 
             var cookies = req ? req.cookies : cookie.parse(document.cookie);
 
-            return {
-                plugActionContext: function (actionContext) {
-                    actionContext.setCookie = function (name, value, options) {
-                        var cookieStr = cookie.serialize(name, value, options);
-                        if (res) {
-                            res.setHeader('Set-Cookie', cookieStr);
-                        } else {
-                            document.cookie = cookieStr;
+            // give all context types access to cookies
+            var contextPlug = function (context) {
+                context.setCookie = function (name, value, options) {
+                    var cookieStr = cookie.serialize(name, value, options);
+                    if (res) {
+                        var header = res.getHeader('Set-Cookie') || [];
+                        if (!Array.isArray(header)) {
+                            header = [header];
                         }
-                        cookies[name] = value;
-                    };
-                    actionContext.getCookie = function (name) {
-                        return cookies[name];
+ 
+                        header.push(cookieStr);
+                        res.setHeader('Set-Cookie', header);
+                    } else {
+                        document.cookie = cookieStr;
                     }
-                }
+                    cookies[name] = value;
+                };
+                context.clearCookie = function (name, options) {
+                    context.setCookie(name, "", merge({ expires: new Date(1), path: '/' }, options));
+                    delete cookies[name];
+                };
+                context.getCookie = function (name) {
+                    return cookies[name];
+                };
+            }
+
+            return {
+                plugActionContext: contextPlug,
+                plugComponentContext: contextPlug,
+                plugStoreContext: contextPlug
             };
         }
     };
